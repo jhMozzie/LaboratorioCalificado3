@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <!--    <package android:name="com.google.android.apps.maps" />-->
+
 
     <application
         android:allowBackup="true"

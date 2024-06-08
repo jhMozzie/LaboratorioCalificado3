@@ -1,5 +1,7 @@
 package com.flores.joseph.laboratoriocalificado03
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +17,31 @@ class ProfesorAdapter(
 
         fun bind(profesor: ProfesorResponse){
             binding.tvName.text = profesor.name
+            binding.tvLastName.text = profesor.last_name
+            binding.tvPhone.text = profesor.phone_number
+            binding.tvEmail.text = profesor.email
             Glide
                 .with(itemView)
                 .load(profesor.getProfesorImage())
                 .into(binding.ivProfesor)
+
+            binding.tvPhone.setOnClickListener {
+                val intent = Intent(Intent.ACTION_DIAL).apply {
+                    data = Uri.parse("tel:${profesor.phone_number}")
+                }
+                itemView.context.startActivity(intent)
+            }
+
+            binding.tvEmail.setOnLongClickListener {
+                val intent = Intent(Intent.ACTION_SENDTO).apply {
+                    data = Uri.parse("mailto:") // solo aplicaciones de correo electrónico deberían manejar esto
+                    putExtra(Intent.EXTRA_EMAIL, arrayOf(profesor.email)) // destinatarios
+                    putExtra(Intent.EXTRA_SUBJECT, "Consulta Importante")
+                    putExtra(Intent.EXTRA_TEXT, "Estimado/a ${profesor.name},")
+                }
+                itemView.context.startActivity(Intent.createChooser(intent, "Enviar correo electrónico usando:"))
+                true // Indica que el evento de long click fue manejado
+            }
         }
     }
 
